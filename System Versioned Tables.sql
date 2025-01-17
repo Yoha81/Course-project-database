@@ -1,0 +1,34 @@
+CREATE TABLE Customers (
+    id INT PRIMARY KEY,
+    name VARCHAR(50),
+    address VARCHAR(100),
+    phone VARCHAR(20),
+    email VARCHAR(50),
+    plan_id INT,
+    SysStartTime DATETIME2 GENERATED ALWAYS AS ROW START,
+    SysEndTime DATETIME2 GENERATED ALWAYS AS ROW END,
+    PERIOD FOR SYSTEM_TIME (SysStartTime, SysEndTime)
+)
+WITH (SYSTEM_VERSIONING = ON (HISTORY_TABLE = dbo.CustomersHistory));
+
+CREATE TABLE Contracts (
+    id INT PRIMARY KEY,
+    customer_id INT,
+    startDate DATE,
+    endDate DATE,
+    SysStartTime DATETIME2 GENERATED ALWAYS AS ROW START,
+    SysEndTime DATETIME2 GENERATED ALWAYS AS ROW END,
+    PERIOD FOR SYSTEM_TIME (SysStartTime, SysEndTime)
+)
+WITH (SYSTEM_VERSIONING = ON (HISTORY_TABLE = dbo.ContractsHistory));
+
+SELECT * FROM Customers
+FOR SYSTEM_TIME ALL;
+
+SELECT * FROM Customers
+FOR SYSTEM_TIME FROM '2024-01-01' TO '2025-12-31';
+
+SELECT * FROM Contracts;
+
+SELECT * FROM Contracts
+FOR SYSTEM_TIME FROM '2024-01-01' TO '2025-12-31';
